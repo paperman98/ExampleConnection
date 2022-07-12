@@ -14,4 +14,20 @@
         android:gravity="center"
         android:text="Load more"/>
 
+    <ProgressBar
+        android:id="@+id/pgLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:visibility="invisible"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/btnLoadMore"
+        app:layout_constraintEnd_toEndOf="@id/btnLoadMore"
+        app:layout_constraintStart_toStartOf="@id/btnLoadMore"
+        app:layout_constraintTop_toTopOf="@id/btnLoadMore" />
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

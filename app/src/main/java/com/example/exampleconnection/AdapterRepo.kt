@@ -7,20 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 interface ClickListener {
-    fun onItemClick(listener: (Repo) -> Unit){
-        this
-    }
+    fun onItemClick(repo: Repo)
     fun onButtonClick()
 }
 
 class AdapterRepo(): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     var mClickListen: ClickListener? = null
-    var showLoadMore:Boolean = false
-    private var listener: ((Repo) -> Unit)? = null
+    var showLoadMore: Boolean = false
+    var showLoading: Boolean = false
+//    var viewLoad: View? = null
 
     var listRepo:ArrayList<Repo> = ArrayList<Repo>()
 
@@ -37,6 +37,7 @@ class AdapterRepo(): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     inner class ViewHolderLoadMore(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val btnLoad: Button = itemView.findViewById(R.id.btnLoadMore)
+        val pgLoading: ProgressBar = itemView.findViewById(R.id.pgLoading)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -54,17 +55,23 @@ class AdapterRepo(): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.e("AAA", "position: $position")
         if(position == listRepo.size) {
             val holderLoadMore = holder as ViewHolderLoadMore
+
             holderLoadMore.btnLoad.setOnClickListener {
+                if(showLoading){
+                    holder.pgLoading.visibility = View.VISIBLE
+
+                }else{
+                    holder.pgLoading.visibility = View.INVISIBLE
+                }
                 mClickListen?.onButtonClick()
             }
         } else {
             val repo: Repo = listRepo[position]
             val holderRepoItem = holder as ViewHolderRepoItem
             holder.itemView.setOnClickListener {
-              val
+                mClickListen?.onItemClick(repo)
             }
             holderRepoItem.tvNumberRepo.text = (position + 1).toString()
             holderRepoItem.tvRepo.text = repo.mName
