@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailRepository">
+
+    <ImageView
+        android:id="@+id/imgSource"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_launcher_background"
+        android:contentDescription="TODO" />
+
+    <TextView
+        android:id="@+id/tvAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/imgSource"
+        app:layout_constraintStart_toEndOf="@+id/imgSource"
+        android:textStyle="bold"
+        android:layout_marginStart="50dp"
+        tools:text="Ten Tag gia"/>
+
+    <TextView
+        android:id="@+id/tvLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/tvAuthor"
+        app:layout_constraintTop_toBottomOf="@+id/tvAuthor"
+        android:layout_marginTop="8dp"
+        tools:text="java"/>
+
+    <TextView
+        android:id="@+id/tvWatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/tvLanguage"
+        app:layout_constraintTop_toBottomOf="@+id/tvLanguage"
+        android:layout_marginTop="8dp"
+        tools:text="3 watch"/>
+
+    <TextView
+        android:id="@+id/tvCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/tvWatch"
+        app:layout_constraintTop_toBottomOf="@+id/tvWatch"
+        android:layout_marginTop="8dp"
+        tools:text="20,05,2021"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toStartOf="@+id/tvCreate"
+        app:layout_constraintTop_toBottomOf="@+id/tvCreate"
+        android:text="Go Visit"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgSource"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="60dp"
+        tools:text="hello world"
+        android:gravity="center"/>
+
+
+
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
