@@ -60,7 +60,6 @@ data class RepoResult(
 
 
 class MainActivity : AppCompatActivity(), ClickListener {
-    private val logTag = "MainActivity"
     private val url = "https://api.github.com/search/repositories?q="
     private var client = OkHttpClient()
     lateinit var listRepo: ArrayList<Repo>

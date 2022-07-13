@@ -5,12 +5,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.ImageViewCompat
 import com.bumptech.glide.Glide
 import java.io.IOException
 import java.io.InputStream
@@ -75,7 +73,6 @@ class DetailRepository : AppCompatActivity() {
         tvDate.text = mDate
         tvWatcher.text = mWatcher
         tvDes.text = mDes
-        Log.e("XXX", "initVariable: "+mAvatar )
         btnGoVisit.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(mUrl)

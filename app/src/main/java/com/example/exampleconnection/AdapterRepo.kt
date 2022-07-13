@@ -20,7 +20,6 @@ class AdapterRepo(): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     var mClickListen: ClickListener? = null
     var showLoadMore: Boolean = false
     var showLoading: Boolean = false
-//    var viewLoad: View? = null
 
     var listRepo:ArrayList<Repo> = ArrayList<Repo>()
 
