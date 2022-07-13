@@ -12,18 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import java.io.IOException
 import java.io.InputStream
+import java.io.Serializable
 import java.net.HttpURLConnection
 import java.net.URL
 
 
 class DetailRepository : AppCompatActivity() {
-    private var mAuthor:String = ""
-    private var mLanguage:String=""
-    private var mWatcher:String=""
-    private var mDate:String=""
-    private var mUrl:String=""
-    private var mAvatar:String=""
-    private var mDes:String=""
 
     private lateinit var tvAuthor:TextView
     private lateinit var imgAvatar:ImageView
@@ -32,6 +26,8 @@ class DetailRepository : AppCompatActivity() {
     private lateinit var tvDate:TextView
     private lateinit var btnGoVisit:Button
     private lateinit var tvDes:TextView
+    private var repo: Repo? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_repository)
@@ -52,34 +48,25 @@ class DetailRepository : AppCompatActivity() {
 
     private fun getBundle(){
         val intent = getIntent()
-        val bundle = intent.extras
-        if (bundle!=null){
-            mAuthor = bundle.getString("tvName", "Tentacgia")
-            mLanguage = bundle.getString("tvLanguage", "java")
-            mWatcher = bundle.getString("tvWatch", "3")
-            mDate = bundle.getString("tvDate", "20.05.2020")
-            mUrl = bundle.getString("tvUrl", "https")
-            mAvatar = bundle.getString("imgAvatar", "https")
-            mDes = bundle.getString("tvDescription", "hello world")
+        val repository = intent.getSerializableExtra("Repository")
+        if(repository != null){
+            repo = repository as Repo
+            initVariable()
         }
-        initVariable()
-
-
     }
-
     private fun initVariable() {
-        tvAuthor.text = mAuthor
-        tvLanguage.text = mLanguage
-        tvDate.text = mDate
-        tvWatcher.text = mWatcher
-        tvDes.text = mDes
+        tvAuthor.text = repo?.mName
+        tvLanguage.text = repo?.mLanguage
+        tvDate.text = repo?.mCreateDate
+        tvWatcher.text = repo?.mWatcher
+        tvDes.text = repo?.mDescription
         btnGoVisit.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(mUrl)
+            intent.data = Uri.parse(repo?.mGitUrl)
             startActivity(intent)
         }
 
-        Glide.with(this).load(mAvatar).into(imgAvatar)
+        Glide.with(this).load(repo?.mOwner?.mImageAvatar).into(imgAvatar)
     }
 
 

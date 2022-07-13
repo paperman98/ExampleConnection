@@ -18,13 +18,14 @@ import kotlinx.android.synthetic.main.activity_detail_repository.*
 import kotlinx.android.synthetic.main.item_loadmore.*
 import okhttp3.*
 import java.io.IOException
+import java.io.Serializable
 import java.net.URL
 
 
 class Owner(
     @SerializedName("avatar_url")
     val mImageAvatar: String? = "",
-)
+):Serializable
 
 class Repo(
     @SerializedName("full_name")
@@ -52,7 +53,7 @@ class Repo(
     @SerializedName("description")
     val mDescription: String? = ""
 
-)
+):Serializable
 
 data class RepoResult(
     val items: ArrayList<Repo>
@@ -160,16 +161,8 @@ class MainActivity : AppCompatActivity(), ClickListener {
     }
 
     override fun onItemClick(repo: Repo) {
-        val intent = Intent( this,DetailRepository::class.java)
-        val bundle = Bundle()
-        bundle.putString("tvName",repo.mName)
-        bundle.putString("tvLanguage",repo.mLanguage)
-        bundle.putString("tvWatch",repo.mWatcher)
-        bundle.putString("imgAvatar",repo.mOwner.mImageAvatar)
-        bundle.putString("tvDate",repo.mCreateDate)
-        bundle.putString("tvUrl",repo.mGitUrl)
-        bundle.putString("tvDescription",repo.mDescription)
-        intent.putExtras(bundle)
+        val intent = Intent( this, DetailRepository::class.java)
+        intent.putExtra("Repository",repo)
         startActivity(intent)
     }
 
