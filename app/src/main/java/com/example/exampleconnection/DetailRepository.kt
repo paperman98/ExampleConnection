@@ -70,22 +70,4 @@ class DetailRepository : AppCompatActivity() {
     }
 
 
-    fun getBitmapFromURL(src: String?): Bitmap? {
-        return try {
-            val url = URL(src)
-            val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            connection.setDoInput(true)
-            connection.connect()
-            val input: InputStream = connection.getInputStream()
-            val myBitmap = BitmapFactory.decodeStream(input)
-            myBitmap
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
-    }
-
-
-
-
 }

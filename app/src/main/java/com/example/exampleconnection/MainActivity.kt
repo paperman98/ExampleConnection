@@ -10,6 +10,8 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -22,51 +24,13 @@ import java.io.Serializable
 import java.net.URL
 
 
-class Owner(
-    @SerializedName("avatar_url")
-    val mImageAvatar: String? = "",
-):Serializable
 
-class Repo(
-    @SerializedName("full_name")
-    val mName: String? = "",
-
-    @SerializedName("owner")
-    val mOwner: Owner,
-
-
-    @SerializedName("stargazers_count")
-    val mStar: String? = "",
-
-    @SerializedName("language")
-    val mLanguage: String? = "",
-
-    @SerializedName("watchers")
-    val mWatcher: String? = "",
-
-    @SerializedName("created_at")
-    val mCreateDate: String? = "",
-
-    @SerializedName("html_url")
-    val mGitUrl: String? = "",
-
-    @SerializedName("description")
-    val mDescription: String? = ""
-
-):Serializable
-
-data class RepoResult(
-    val items: ArrayList<Repo>
-)
 
 
 class MainActivity : AppCompatActivity(), ClickListener {
-    private val url = "https://api.github.com/search/repositories?q="
-    private var client = OkHttpClient()
     lateinit var listRepo: ArrayList<Repo>
     private lateinit var adapterRepo: AdapterRepo
-    var numberPage:Int = 1
-    val perPage = 30
+    private lateinit var viewModel:RepoViewModel
     private lateinit var mEditText: androidx.appcompat.widget.SearchView
     private lateinit var mListView: RecyclerView
 
@@ -77,7 +41,8 @@ class MainActivity : AppCompatActivity(), ClickListener {
 
         mEditText = findViewById(R.id.edtSearch)
         mListView = findViewById(R.id.lvRepository)
-        listRepo = ArrayList<Repo>()
+        listRepo= ArrayList<Repo>()
+        viewModel = ViewModelProvider(this).get(RepoViewModel::class.java)
         adapterRepo = AdapterRepo()
         mListView.adapter = adapterRepo
         mListView.layoutManager = LinearLayoutManager(this)
@@ -94,7 +59,7 @@ class MainActivity : AppCompatActivity(), ClickListener {
                 query?.let {
                     if (query.isNotEmpty()) {
                         listRepo.clear()
-                        getRepository(query,1)
+                        viewModel.getRepository(query,1)
                     }
                     mEditText.clearFocus()
                 }
@@ -106,6 +71,9 @@ class MainActivity : AppCompatActivity(), ClickListener {
             }
 
         })
+        viewModel.listRepo.observe(this){
+            setUpListView(it,viewModel.showLoadMore)
+        }
 
     }
 
@@ -116,47 +84,10 @@ class MainActivity : AppCompatActivity(), ClickListener {
         adapterRepo.notifyDataSetChanged();
     }
 
-    private fun getRepository(query: String, page:Int ) {
-        val request = Request.Builder()
-            .url(URL("$url$query&page=$page&per_page=$perPage"))
-            .build()
 
-        client.newCall(request).enqueue(object : Callback {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onFailure(call: Call, e: IOException) {
-                adapterRepo.showLoading = false
-                runOnUiThread {
-                    adapterRepo.notifyDataSetChanged();
-                }
-                e.printStackTrace()
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if (!response.isSuccessful) throw Exception("loi0")
-                    val gson = Gson()
-                    val data = gson.fromJson(response.body?.string(), RepoResult::class.java)
-                    for (repo in data.items) {
-                        listRepo.add(repo)
-                    }
-                    ++numberPage
-                    adapterRepo.showLoading = false
-                    runOnUiThread {
-                        if (data.items.size == perPage){
-                            setUpListView(listRepo,true)
-                        } else {
-                            setUpListView(listRepo, false)
-                        }
-                    }
-                }
-            }
-
-        }
-        )
-    }
 
     override fun onButtonClick() {
-        getRepository(mEditText.query.toString(),numberPage)
+        viewModel.getRepository(mEditText.query.toString(),viewModel.numberPage)
 
     }
 
