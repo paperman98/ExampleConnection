@@ -122,7 +122,12 @@ class MainActivity : AppCompatActivity(), ClickListener {
             .build()
 
         client.newCall(request).enqueue(object : Callback {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onFailure(call: Call, e: IOException) {
+                adapterRepo.showLoading = false
+                runOnUiThread {
+                    adapterRepo.notifyDataSetChanged();
+                }
                 e.printStackTrace()
             }
 
@@ -151,7 +156,6 @@ class MainActivity : AppCompatActivity(), ClickListener {
     }
 
     override fun onButtonClick() {
-        adapterRepo.showLoading = true
         getRepository(mEditText.query.toString(),numberPage)
 
     }

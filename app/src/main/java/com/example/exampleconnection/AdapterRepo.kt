@@ -58,13 +58,19 @@ class AdapterRepo(): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         if(position == listRepo.size) {
             val holderLoadMore = holder as ViewHolderLoadMore
 
-            holderLoadMore.btnLoad.setOnClickListener {
-                if(showLoading){
-                    holder.pgLoading.visibility = View.VISIBLE
+            if(showLoading){
+                holder.pgLoading.visibility = View.VISIBLE
+                holder.btnLoad.visibility = View.INVISIBLE
 
-                }else{
-                    holder.pgLoading.visibility = View.INVISIBLE
-                }
+            }else{
+                holder.pgLoading.visibility = View.INVISIBLE
+                holder.btnLoad.visibility = View.VISIBLE
+
+            }
+
+            holderLoadMore.btnLoad.setOnClickListener {
+                holder.btnLoad.visibility = View.INVISIBLE
+                holder.pgLoading.visibility = View.VISIBLE
                 mClickListen?.onButtonClick()
             }
         } else {
